@@ -82,8 +82,8 @@ export default function VSADashboard() {
       {/* Premium Dark Sidebar */}
       <div className="w-72 bg-[#121214] border-r border-white/5 flex flex-col p-6 space-y-2 relative z-10">
         <div className="flex items-center space-x-3 mb-10 mt-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-fuchsia-600 flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.5)]">
+            <span className="text-white font-extrabold text-sm tracking-widest font-mono">AF</span>
           </div>
           <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-500 tracking-tight">Aegis Flow</span>
         </div>
@@ -186,29 +186,29 @@ export default function VSADashboard() {
 
         {/* Premium Metric Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 relative z-10">
-          <div className="bg-[#121214]/80 backdrop-blur-md rounded-2xl p-6 border border-white/5 shadow-xl relative overflow-hidden group">
+          <div className="bg-[#121214]/80 backdrop-blur-md rounded-2xl p-6 border border-indigo-500/30 shadow-[0_0_30px_rgba(99,102,241,0.15)] relative overflow-hidden group hover:shadow-[0_0_40px_rgba(99,102,241,0.3)] transition-shadow">
              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><svg className="w-16 h-16 text-indigo-400" fill="currentColor" viewBox="0 0 20 20"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" /><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" /></svg></div>
              <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">Lowest Balance Projection</p>
-             <p className={`text-4xl font-bold mt-2 font-mono tracking-tight ${lowestBalance < 0 ? 'text-rose-400' : 'text-white'}`}>
+             <p className={`text-4xl font-bold mt-2 font-mono tracking-tight ${lowestBalance < 0 ? 'text-rose-400 drop-shadow-[0_0_10px_rgba(244,63,94,0.8)]' : 'text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]'}`}>
                ${lowestBalance.toLocaleString()}
              </p>
              <p className="text-xs text-indigo-400 mt-2 font-medium bg-indigo-500/10 inline-block px-2 py-1 rounded">95% Confidence Interval</p>
           </div>
           
-          <div className="bg-[#121214]/80 backdrop-blur-md rounded-2xl p-6 border border-white/5 shadow-xl relative overflow-hidden group">
-             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><svg className="w-16 h-16 text-rose-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" /></svg></div>
+          <div className="bg-[#121214]/80 backdrop-blur-md rounded-2xl p-6 border border-emerald-500/30 shadow-[0_0_30px_rgba(16,185,129,0.15)] relative overflow-hidden group hover:shadow-[0_0_40px_rgba(16,185,129,0.3)] transition-shadow">
+             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><svg className="w-16 h-16 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" /></svg></div>
              <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">Critical Danger Date</p>
-             <p className={`text-4xl font-bold mt-2 tracking-tight ${dangerDate ? 'text-rose-400' : 'text-emerald-400'}`}>{dangerDate || "Safe"}</p>
+             <p className={`text-4xl font-bold mt-2 tracking-tight drop-shadow-[0_0_10px_rgba(52,211,153,0.8)] ${dangerDate ? 'text-rose-400 drop-shadow-[0_0_10px_rgba(244,63,94,0.8)]' : 'text-emerald-400'}`}>{dangerDate || "Safe"}</p>
              <p className="text-xs text-gray-500 mt-2 font-medium">Next 90 Days</p>
           </div>
 
-          <div className="bg-gradient-to-br from-indigo-900/40 to-purple-900/20 backdrop-blur-md rounded-2xl p-6 border border-indigo-500/20 shadow-xl relative overflow-hidden">
-             <div className="absolute -top-4 -right-4 w-24 h-24 bg-indigo-500/20 rounded-full blur-xl"></div>
+          <div className="bg-gradient-to-br from-indigo-900/40 to-purple-900/20 backdrop-blur-md rounded-2xl p-6 border border-purple-500/30 shadow-[0_0_30px_rgba(168,85,247,0.2)] relative overflow-hidden">
+             <div className="absolute -top-4 -right-4 w-24 h-24 bg-purple-500/30 rounded-full blur-2xl"></div>
              <div className="flex items-center space-x-2 mb-2">
-               <svg className="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-               <p className="text-xs font-bold text-indigo-300 uppercase tracking-widest">AI Playbook</p>
+               <svg className="w-4 h-4 text-purple-400 drop-shadow-[0_0_5px_rgba(168,85,247,0.8)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+               <p className="text-xs font-bold text-purple-300 uppercase tracking-widest">AI Playbook</p>
              </div>
-             <p className="text-sm mt-2 text-indigo-100 leading-relaxed font-medium">{playbook}</p>
+             <p className="text-sm mt-2 text-purple-100 leading-relaxed font-medium">{playbook}</p>
           </div>
         </div>
 

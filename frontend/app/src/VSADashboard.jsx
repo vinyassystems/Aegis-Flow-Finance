@@ -268,6 +268,59 @@ export default function VSADashboard() {
           </div>
         )}
 
+        {activeModel === 'b2b' && (
+          <div className="bg-[#121214]/80 backdrop-blur-md p-6 rounded-2xl border border-amber-500/30 mb-8 shadow-[0_0_40px_rgba(245,158,11,0.15)] relative overflow-hidden">
+            <div className="absolute top-[-50px] right-[-50px] w-32 h-32 bg-amber-500/20 rounded-full blur-[50px] pointer-events-none"></div>
+            <div className="flex justify-between items-center mb-6 relative z-10">
+              <h2 className="text-lg font-semibold text-white flex items-center space-x-2">
+                <svg className="w-5 h-5 text-amber-400 drop-shadow-[0_0_5px_rgba(245,158,11,0.8)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>
+                <span>API Key Management</span>
+              </h2>
+              <button className="bg-amber-500/10 text-amber-400 border border-amber-500/50 hover:bg-amber-500/20 px-4 py-2 rounded-lg font-semibold transition-all text-sm flex items-center space-x-2">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                <span>Generate New Key</span>
+              </button>
+            </div>
+            
+            <div className="bg-black/40 rounded-xl border border-white/5 overflow-hidden mb-6 relative z-10">
+              <table className="w-full text-left text-sm text-gray-400">
+                <thead className="bg-white/5 text-gray-300">
+                  <tr>
+                    <th className="px-4 py-3 font-medium">NAME</th>
+                    <th className="px-4 py-3 font-medium">KEY</th>
+                    <th className="px-4 py-3 font-medium">CREATED</th>
+                    <th className="px-4 py-3 font-medium">STATUS</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  <tr className="hover:bg-white/5 transition-colors">
+                    <td className="px-4 py-3">Production App</td>
+                    <td className="px-4 py-3 font-mono text-amber-400/80">aegis_live_••••••••8x9q</td>
+                    <td className="px-4 py-3">Oct 12, 2026</td>
+                    <td className="px-4 py-3"><span className="bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded-md text-xs font-semibold">Active</span></td>
+                  </tr>
+                  <tr className="hover:bg-white/5 transition-colors">
+                    <td className="px-4 py-3">Local Testing</td>
+                    <td className="px-4 py-3 font-mono text-amber-400/80">aegis_test_••••••••p2m4</td>
+                    <td className="px-4 py-3">Sep 19, 2026</td>
+                    <td className="px-4 py-3"><span className="bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded-md text-xs font-semibold">Active</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div className="bg-black/60 p-4 rounded-xl border border-white/10 relative z-10">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">Quickstart: cURL</p>
+              <code className="text-xs text-emerald-300 font-mono block whitespace-pre-wrap">
+                curl -X POST "http://localhost:8000/api/v1/freelancer/simulate" \<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-H "Authorization: Bearer aegis_live_••••••••" \<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-H "Content-Type: application/json" \<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-d '&#123;"starting_balance": 8450, "transactions": []&#125;'
+              </code>
+            </div>
+          </div>
+        )}
+
         {/* Premium Metric Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 relative z-10">
           <div className="bg-[#121214]/80 backdrop-blur-md rounded-2xl p-6 border border-indigo-500/30 shadow-[0_0_30px_rgba(99,102,241,0.15)] relative overflow-hidden group hover:shadow-[0_0_40px_rgba(99,102,241,0.3)] transition-shadow">

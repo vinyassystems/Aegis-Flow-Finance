@@ -16,11 +16,18 @@ export default function VSADashboard() {
   const [dangerDate, setDangerDate] = useState(null);
   const [playbook, setPlaybook] = useState("Run simulation to analyze cash flow.");
 
+  const today = new Date();
+  const addDays = (days) => {
+    const d = new Date(today);
+    d.setDate(d.getDate() + days);
+    return d.toISOString().split('T')[0];
+  };
+
   const [transactions, setTransactions] = useState([
-    { id: 1, name: "Acme Corp Client", amount: 5000, type: "income", due_date: "2026-10-15" },
-    { id: 2, name: "AWS Server Hosting", amount: 200, type: "expense", due_date: "2026-10-05" },
-    { id: 3, name: "Office Rent", amount: 1500, type: "expense", due_date: "2026-11-01" },
-    { id: 4, name: "Design Freelancer", amount: 800, type: "expense", due_date: "2026-11-20" },
+    { id: 1, name: "Acme Corp Client", amount: 5000, type: "income", due_date: addDays(15) },
+    { id: 2, name: "AWS Server Hosting", amount: 200, type: "expense", due_date: addDays(5) },
+    { id: 3, name: "Office Rent", amount: 1500, type: "expense", due_date: addDays(30) },
+    { id: 4, name: "Design Freelancer", amount: 800, type: "expense", due_date: addDays(45) },
   ]);
 
   const runSimulation = async (extraExpense = null) => {

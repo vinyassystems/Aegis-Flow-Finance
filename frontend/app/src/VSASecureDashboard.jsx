@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
-import { decryptPayload } from './crypto';
 
 // The exact encrypted string from the python backend (AES-GCM)
 const ENCRYPTED_PAYLOAD_FROM_SERVER = "gAAAAABm-... (simulated for UI)";

@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+venv/
+env/
+*.db
+*.sqlite3
+
+# Node / React
+frontend/app/node_modules/
+frontend/app/dist/
+frontend/app/.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store

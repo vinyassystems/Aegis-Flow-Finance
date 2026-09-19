@@ -11,13 +11,11 @@ export default function VSADashboard() {
   const [variableExpense, setVariableExpense] = useState(50);
   const [searchTerm, setSearchTerm] = useState('');
   
-  // Real State for Engine Results
   const [data, setData] = useState([]);
   const [lowestBalance, setLowestBalance] = useState(0);
   const [dangerDate, setDangerDate] = useState(null);
   const [playbook, setPlaybook] = useState("Run simulation to analyze cash flow.");
 
-  // Mock Transactions for the UI
   const [transactions, setTransactions] = useState([
     { id: 1, name: "Acme Corp Client", amount: 5000, type: "income", due_date: "2026-10-15" },
     { id: 2, name: "AWS Server Hosting", amount: 200, type: "expense", due_date: "2026-10-05" },
@@ -25,7 +23,6 @@ export default function VSADashboard() {
     { id: 4, name: "Design Freelancer", amount: 800, type: "expense", due_date: "2026-11-20" },
   ]);
 
-  // Run Real Backend Simulation
   const runSimulation = async (extraExpense = null) => {
     setLoading(true);
     try {
@@ -34,10 +31,7 @@ export default function VSADashboard() {
         transactions: transactions,
         variable_daily_expense: variableExpense
       };
-
-      if (extraExpense) {
-        payload.transactions.push(extraExpense);
-      }
+      if (extraExpense) payload.transactions.push(extraExpense);
 
       const response = await fetch('http://localhost:8000/api/v1/freelancer/simulate', {
         method: 'POST',
@@ -52,15 +46,12 @@ export default function VSADashboard() {
       setPlaybook(result.recovery_playbook);
     } catch (err) {
       console.error("Backend offline. Please start FastAPI.", err);
-      setPlaybook("⚠️ Error: Could not connect to FastAPI backend on port 8000.");
+      setPlaybook("⚠️ Error: Could not connect to FastAPI backend.");
     }
     setLoading(false);
   };
 
-  // Initial load
-  useEffect(() => {
-    runSimulation();
-  }, []);
+  useEffect(() => { runSimulation(); }, []);
 
   const handleMLUpdate = (e) => {
     setVariableExpense(parseInt(e.target.value));
@@ -69,25 +60,16 @@ export default function VSADashboard() {
 
   const handleB2CPurchase = (e) => {
     e.preventDefault();
-    const newPurchase = {
-      id: 99, 
-      name: purchaseItem, 
-      amount: parseInt(purchaseAmount), 
-      type: "expense", 
-      due_date: new Date().toISOString().split('T')[0]
-    };
+    const newPurchase = { id: 99, name: purchaseItem, amount: parseInt(purchaseAmount), type: "expense", due_date: new Date().toISOString().split('T')[0] };
     runSimulation(newPurchase);
   };
 
-  // Filter transactions based on Search Bar
-  const filteredTransactions = transactions.filter(t => 
-    t.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredTransactions = transactions.filter(t => t.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   if (secureMode) {
     return (
-      <div className="relative">
-        <button onClick={() => setSecureMode(false)} className="absolute top-4 right-4 bg-red-600 text-white px-4 py-2 rounded z-50 hover:bg-red-700">
+      <div className="relative bg-black min-h-screen">
+        <button onClick={() => setSecureMode(false)} className="absolute top-6 right-6 bg-red-500/10 text-red-500 border border-red-500/50 hover:bg-red-500/20 px-6 py-2 rounded-full transition-all z-50 font-medium tracking-wide">
           Exit Secure Terminal
         </button>
         <VSASecureDashboard />
@@ -96,113 +78,172 @@ export default function VSADashboard() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50 font-sans">
-      <div className="w-64 bg-gray-900 text-white flex flex-col p-6 space-y-4">
-        <div className="text-2xl font-bold text-blue-400 mb-6">Aegis Flow</div>
-        <button onClick={() => setActiveModel('freelancer')} className={`text-left p-3 rounded-lg transition-colors ${activeModel === 'freelancer' ? 'bg-blue-600' : 'hover:bg-gray-800'}`}>1. Freelancer Predictor</button>
-        <button onClick={() => setActiveModel('b2c')} className={`text-left p-3 rounded-lg transition-colors ${activeModel === 'b2c' ? 'bg-blue-600' : 'hover:bg-gray-800'}`}>2. B2C Copilot</button>
-        <button onClick={() => setActiveModel('b2b')} className={`text-left p-3 rounded-lg transition-colors ${activeModel === 'b2b' ? 'bg-blue-600' : 'hover:bg-gray-800'}`}>3. B2B Merchant API</button>
-        <div className="mt-auto pt-8">
-          <button onClick={() => setSecureMode(true)} className="w-full bg-gray-700 text-green-400 border border-green-500 p-3 rounded-lg hover:bg-gray-600 flex items-center justify-center space-x-2">
-            <span>🔒 ZK-Terminal</span>
-          </button>
+    <div className="flex h-screen bg-[#0A0A0B] font-sans text-gray-200 overflow-hidden">
+      {/* Premium Dark Sidebar */}
+      <div className="w-72 bg-[#121214] border-r border-white/5 flex flex-col p-6 space-y-2 relative z-10">
+        <div className="flex items-center space-x-3 mb-10 mt-2">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+          </div>
+          <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-500 tracking-tight">Aegis Flow</span>
+        </div>
+        
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 mt-4 ml-2">Modules</p>
+        
+        <button onClick={() => setActiveModel('freelancer')} className={`text-left px-4 py-3 rounded-xl transition-all flex items-center space-x-3 ${activeModel === 'freelancer' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'}`}>
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+          <span className="font-medium text-sm">Freelancer Engine</span>
+        </button>
+        
+        <button onClick={() => setActiveModel('b2c')} className={`text-left px-4 py-3 rounded-xl transition-all flex items-center space-x-3 ${activeModel === 'b2c' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'}`}>
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg>
+          <span className="font-medium text-sm">Consumer Copilot</span>
+        </button>
+        
+        <button onClick={() => setActiveModel('b2b')} className={`text-left px-4 py-3 rounded-xl transition-all flex items-center space-x-3 ${activeModel === 'b2b' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'}`}>
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+          <span className="font-medium text-sm">Developer API</span>
+        </button>
+
+        <div className="mt-auto pb-4">
+          <div className="bg-gradient-to-r from-emerald-500/10 to-teal-500/10 p-4 rounded-2xl border border-emerald-500/20">
+            <p className="text-xs text-emerald-400/80 mb-3 font-medium">AES-GCM Encryption Active</p>
+            <button onClick={() => setSecureMode(true)} className="w-full bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 hover:shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all p-2.5 rounded-xl text-sm font-semibold flex justify-center items-center space-x-2">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+              <span>ZK Terminal</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="flex-1 p-8 overflow-auto">
-        <header className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 capitalize">
-            {activeModel === 'freelancer' && "Freelancer Cash Flow"}
-            {activeModel === 'b2c' && "AI Purchase Copilot"}
-            {activeModel === 'b2b' && "Merchant API Gateway"}
-          </h1>
-          <button onClick={() => runSimulation()} className="bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700">
-            {loading ? "Computing..." : "Run Engine"}
+      {/* Main Content Dashboard */}
+      <div className="flex-1 p-10 overflow-y-auto relative">
+        {/* Subtle background glow */}
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none"></div>
+        
+        <header className="flex justify-between items-end mb-10 relative z-10">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-white mb-1">
+              {activeModel === 'freelancer' && "Cash Flow Intelligence"}
+              {activeModel === 'b2c' && "Purchase Copilot"}
+              {activeModel === 'b2b' && "Merchant Gateway"}
+            </h1>
+            <p className="text-gray-400 text-sm">Real-time ML forecasting powered by Aegis Engine.</p>
+          </div>
+          
+          <button onClick={() => runSimulation()} className="bg-white text-black hover:bg-gray-200 px-6 py-2.5 rounded-full font-semibold transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center space-x-2">
+            {loading ? (
+              <span className="flex items-center space-x-2"><svg className="animate-spin h-4 w-4 text-black" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> <span>Syncing...</span></span>
+            ) : (
+              <span>⚡ Run Engine</span>
+            )}
           </button>
         </header>
 
         {activeModel === 'freelancer' && (
-          <div className="bg-white p-6 rounded-lg shadow mb-8 border border-gray-200">
-            <div className="flex justify-between items-center mb-4">
-               <h2 className="text-lg font-bold">🧠 ML Forecasting & Live Search</h2>
-               <input 
-                 type="text" 
-                 placeholder="🔍 Search invoices/expenses..." 
-                 value={searchTerm} 
-                 onChange={e => setSearchTerm(e.target.value)} 
-                 className="border p-2 rounded w-64 bg-gray-50"
-               />
-            </div>
-            <p className="text-sm text-gray-500 mb-4">Adjust your daily variable spend.</p>
-            <input type="range" min="10" max="200" value={variableExpense} onMouseUp={handleMLUpdate} onChange={e => setVariableExpense(parseInt(e.target.value))} className="w-64" />
-            <span className="font-bold text-blue-600 ml-4">${variableExpense} / day</span>
-            
-            {/* Search Results Table */}
-            <div className="mt-4 border-t pt-4">
-               <h3 className="text-sm font-bold text-gray-700 mb-2">Matching Transactions ({filteredTransactions.length})</h3>
-               <div className="max-h-32 overflow-y-auto">
-                 {filteredTransactions.map(t => (
-                   <div key={t.id} className="flex justify-between text-sm py-1 border-b">
-                     <span>{t.name} ({t.due_date})</span>
-                     <span className={t.type === 'income' ? 'text-green-600' : 'text-red-600'}>
-                       {t.type === 'income' ? '+' : '-'}${t.amount}
-                     </span>
-                   </div>
-                 ))}
+          <div className="bg-[#121214]/80 backdrop-blur-md p-6 rounded-2xl border border-white/5 mb-8 shadow-xl">
+            <div className="flex justify-between items-center mb-6">
+               <h2 className="text-lg font-semibold text-white flex items-center space-x-2">
+                 <svg className="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                 <span>ML Forecasting & Ledger</span>
+               </h2>
+               <div className="relative">
+                 <svg className="w-4 h-4 absolute left-3 top-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                 <input type="text" placeholder="Search transactions..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="bg-black/50 border border-white/10 text-sm text-gray-200 placeholder-gray-600 rounded-full pl-10 pr-4 py-2 w-72 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 transition-all" />
                </div>
             </div>
+            
+            <div className="flex items-center space-x-6 bg-black/30 p-4 rounded-xl border border-white/5 mb-6">
+              <div>
+                <p className="text-xs text-gray-400 font-medium mb-1 uppercase tracking-wider">Daily Variable Spend Limit</p>
+                <div className="flex items-center space-x-4">
+                  <input type="range" min="10" max="200" value={variableExpense} onMouseUp={handleMLUpdate} onChange={e => setVariableExpense(parseInt(e.target.value))} className="w-48 accent-indigo-500" />
+                  <span className="font-mono text-indigo-400 font-semibold bg-indigo-500/10 px-3 py-1 rounded-lg">${variableExpense} <span className="text-xs text-gray-500">/ day</span></span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="max-h-40 overflow-y-auto pr-2 custom-scrollbar">
+              {filteredTransactions.map(t => (
+                <div key={t.id} className="flex justify-between items-center py-3 border-b border-white/5 hover:bg-white/5 px-3 rounded-lg transition-colors group">
+                  <div className="flex items-center space-x-3">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${t.type === 'income' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
+                      {t.type === 'income' ? <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg> : <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>}
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">{t.name}</p>
+                      <p className="text-xs text-gray-500">{t.due_date}</p>
+                    </div>
+                  </div>
+                  <span className={`font-mono text-sm font-semibold ${t.type === 'income' ? 'text-emerald-400' : 'text-gray-300'}`}>
+                    {t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString()}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
-        {activeModel === 'b2c' && (
-          <div className="bg-white p-6 rounded-lg shadow mb-8 border border-gray-200">
-            <h2 className="text-lg font-bold mb-4">Ask the AI: Can I afford this?</h2>
-            <form onSubmit={handleB2CPurchase} className="flex space-x-4">
-              <input type="text" placeholder="e.g. MacBook Pro" value={purchaseItem} onChange={e => setPurchaseItem(e.target.value)} className="flex-1 border p-2 rounded" required />
-              <input type="number" placeholder="Cost ($)" value={purchaseAmount} onChange={e => setPurchaseAmount(e.target.value)} className="w-32 border p-2 rounded" required />
-              <button type="submit" className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
-                Check Affordability
-              </button>
-            </form>
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500">
-             <p className="text-sm font-medium text-gray-500 uppercase">Lowest Balance</p>
-             <p className={`text-3xl font-bold mt-2 ${lowestBalance < 0 ? 'text-red-600' : 'text-gray-900'}`}>
+        {/* Premium Metric Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 relative z-10">
+          <div className="bg-[#121214]/80 backdrop-blur-md rounded-2xl p-6 border border-white/5 shadow-xl relative overflow-hidden group">
+             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><svg className="w-16 h-16 text-indigo-400" fill="currentColor" viewBox="0 0 20 20"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" /><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" /></svg></div>
+             <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">Lowest Balance Projection</p>
+             <p className={`text-4xl font-bold mt-2 font-mono tracking-tight ${lowestBalance < 0 ? 'text-rose-400' : 'text-white'}`}>
                ${lowestBalance.toLocaleString()}
              </p>
+             <p className="text-xs text-indigo-400 mt-2 font-medium bg-indigo-500/10 inline-block px-2 py-1 rounded">95% Confidence Interval</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-6 border-l-4 border-red-500">
-             <p className="text-sm font-medium text-gray-500 uppercase">Danger Date</p>
-             <p className="text-3xl font-bold mt-2 text-gray-900">{dangerDate || "Safe!"}</p>
+          
+          <div className="bg-[#121214]/80 backdrop-blur-md rounded-2xl p-6 border border-white/5 shadow-xl relative overflow-hidden group">
+             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity"><svg className="w-16 h-16 text-rose-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" /></svg></div>
+             <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">Critical Danger Date</p>
+             <p className={`text-4xl font-bold mt-2 tracking-tight ${dangerDate ? 'text-rose-400' : 'text-emerald-400'}`}>{dangerDate || "Safe"}</p>
+             <p className="text-xs text-gray-500 mt-2 font-medium">Next 90 Days</p>
           </div>
-          <div className="bg-white rounded-lg shadow p-6 border-l-4 border-green-500">
-             <p className="text-sm font-medium text-gray-500 uppercase">AI Recommendation</p>
-             <p className="text-sm mt-2 text-gray-700">{playbook}</p>
+
+          <div className="bg-gradient-to-br from-indigo-900/40 to-purple-900/20 backdrop-blur-md rounded-2xl p-6 border border-indigo-500/20 shadow-xl relative overflow-hidden">
+             <div className="absolute -top-4 -right-4 w-24 h-24 bg-indigo-500/20 rounded-full blur-xl"></div>
+             <div className="flex items-center space-x-2 mb-2">
+               <svg className="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+               <p className="text-xs font-bold text-indigo-300 uppercase tracking-widest">AI Playbook</p>
+             </div>
+             <p className="text-sm mt-2 text-indigo-100 leading-relaxed font-medium">{playbook}</p>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6 h-96 border border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Real Backend API Projection</h2>
+        {/* Premium Chart */}
+        <div className="bg-[#121214]/80 backdrop-blur-md rounded-2xl shadow-2xl p-6 h-[400px] border border-white/5 relative z-10">
+          <h2 className="text-sm font-semibold text-gray-300 mb-6 flex items-center space-x-2">
+            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+            <span>Live Predictive Trajectory</span>
+          </h2>
           {data.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
-              <ComposedChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
-                <XAxis dataKey="date" stroke="#6B7280" />
-                <YAxis stroke="#6B7280" />
-                <Tooltip />
-                <ReferenceLine y={0} stroke="#EF4444" strokeDasharray="4 4" />
-                <Area type="monotone" dataKey="bestCase" fill="#DBEAFE" stroke="none" />
-                <Area type="monotone" dataKey="worstCase" fill="#ffffff" stroke="none" />
-                <Line type="monotone" dataKey="balance" stroke="#2563EB" strokeWidth={3} dot={{ r: 4 }} />
-                <Line type="monotone" dataKey="worstCase" stroke="#93C5FD" strokeDasharray="3 3" dot={false} />
-                <Line type="monotone" dataKey="bestCase" stroke="#93C5FD" strokeDasharray="3 3" dot={false} />
+              <ComposedChart data={data} margin={{ top: 5, right: 30, left: 0, bottom: 20 }}>
+                <defs>
+                  <linearGradient id="colorBalance" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ffffff10" />
+                <XAxis dataKey="date" stroke="#6b7280" tick={{fill: '#6b7280', fontSize: 12}} axisLine={false} tickLine={false} dy={10} />
+                <YAxis stroke="#6b7280" tick={{fill: '#6b7280', fontSize: 12}} axisLine={false} tickLine={false} tickFormatter={(val) => `$${val}`} />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#18181b', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.5)' }}
+                  itemStyle={{ color: '#e5e7eb' }}
+                />
+                <ReferenceLine y={0} stroke="#ef4444" strokeDasharray="4 4" strokeOpacity={0.5} />
+                <Area type="monotone" dataKey="bestCase" fill="url(#colorBalance)" stroke="none" />
+                <Area type="monotone" dataKey="worstCase" fill="#121214" stroke="none" />
+                <Line type="monotone" dataKey="balance" stroke="#818cf8" strokeWidth={3} dot={{ r: 4, fill: '#818cf8', strokeWidth: 2, stroke: '#121214' }} activeDot={{ r: 6, strokeWidth: 0, shadow: '0 0 10px #818cf8' }} />
+                <Line type="monotone" dataKey="worstCase" stroke="#4f46e5" strokeOpacity={0.5} strokeDasharray="4 4" dot={false} strokeWidth={1.5} />
+                <Line type="monotone" dataKey="bestCase" stroke="#4f46e5" strokeOpacity={0.5} strokeDasharray="4 4" dot={false} strokeWidth={1.5} />
               </ComposedChart>
             </ResponsiveContainer>
           ) : (
-            <div className="flex h-full items-center justify-center text-gray-400">Loading projection data...</div>
+            <div className="flex h-full items-center justify-center text-gray-500 font-medium">Initializing Aegis Core Engine...</div>
           )}
         </div>
       </div>

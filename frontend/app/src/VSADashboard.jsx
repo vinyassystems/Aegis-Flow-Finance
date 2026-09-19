@@ -220,13 +220,43 @@ export default function VSADashboard() {
                </div>
             </div>
             
-            <div className="flex items-center space-x-6 bg-black/30 p-4 rounded-xl border border-white/5 mb-6 relative z-10">
-              <div>
-                <p className="text-xs text-gray-400 font-medium mb-1 uppercase tracking-wider">Daily Variable Spend Limit</p>
-                <div className="flex items-center space-x-4">
-                  <input type="range" min="10" max="200" value={variableExpense} onMouseUp={handleMLUpdate} onChange={e => setVariableExpense(parseInt(e.target.value))} className="w-48 accent-indigo-500" />
-                  <span className="font-mono text-indigo-400 font-semibold bg-indigo-500/10 px-3 py-1 rounded-lg">${variableExpense} <span className="text-xs text-gray-500">/ day</span></span>
+            <div className="flex flex-col space-y-4 bg-black/30 p-4 rounded-xl border border-white/5 mb-6 relative z-10">
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-xs text-gray-400 font-medium mb-1 uppercase tracking-wider">Daily Variable Spend Limit</p>
+                  <div className="flex items-center space-x-4">
+                    <input type="range" min="10" max="200" value={variableExpense} onMouseUp={handleMLUpdate} onChange={e => setVariableExpense(parseInt(e.target.value))} className="w-48 accent-indigo-500" />
+                    <span className="font-mono text-indigo-400 font-semibold bg-indigo-500/10 px-3 py-1 rounded-lg">${variableExpense} <span className="text-xs text-gray-500">/ day</span></span>
+                  </div>
                 </div>
+              </div>
+              
+              <div className="border-t border-white/5 pt-4">
+                <p className="text-xs text-gray-400 font-medium mb-2 uppercase tracking-wider">Manual Entry</p>
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  const name = e.target.txName.value;
+                  const amount = parseFloat(e.target.txAmount.value);
+                  const type = e.target.txType.value;
+                  const date = e.target.txDate.value;
+                  if (name && amount && date) {
+                    const newTx = { id: Date.now(), name, amount, type, due_date: date };
+                    setTransactions([...transactions, newTx]);
+                    setTimeout(() => runSimulation(), 100);
+                    e.target.reset();
+                  }
+                }} className="flex space-x-2">
+                  <input type="text" name="txName" placeholder="e.g. Graphic Design Gig" className="flex-1 bg-black/50 border border-white/10 text-sm text-gray-200 placeholder-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-500/50" required />
+                  <input type="number" name="txAmount" placeholder="$ Amount" className="w-24 bg-black/50 border border-white/10 text-sm text-gray-200 placeholder-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-500/50" required />
+                  <select name="txType" className="bg-black/50 border border-white/10 text-sm text-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-500/50">
+                    <option value="income">Income (+)</option>
+                    <option value="expense">Expense (-)</option>
+                  </select>
+                  <input type="date" name="txDate" defaultValue={new Date().toISOString().split('T')[0]} className="bg-black/50 border border-white/10 text-sm text-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-500/50" required />
+                  <button type="submit" className="bg-indigo-500/20 text-indigo-400 hover:bg-indigo-500/30 px-4 py-2 rounded-lg font-semibold transition-all text-sm border border-indigo-500/50">
+                    Add
+                  </button>
+                </form>
               </div>
             </div>
             

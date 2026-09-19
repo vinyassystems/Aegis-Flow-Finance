@@ -24,7 +24,13 @@ Aegis is a Full-Stack Monorepo consisting of three layers:
 
 ## 💻 Getting Started (Local Development)
 
-### 1. Start the Backend API (FastAPI)
+### 1. Clone the Repository
+```bash
+git clone https://github.com/vinyassystems/Aegis-Flow-Finance.git
+cd Aegis-Flow-Finance
+```
+
+### 2. Start the Backend API (FastAPI)
 ```bash
 # From the root directory
 pip install -r requirements.txt
@@ -32,7 +38,7 @@ uvicorn backend.main:app --reload
 ```
 *API will be live at `http://localhost:8000`*
 
-### 2. Start the Frontend Dashboard (React/Vite)
+### 3. Start the Frontend Dashboard (React/Vite)
 ```bash
 cd frontend/app
 npm install
@@ -40,14 +46,16 @@ npm run dev
 ```
 *Dashboard will be live at `http://localhost:5173`*
 
-### 3. Setup the AI MCP Server (Claude Desktop)
+*(Tip: Windows users can simply double-click `start_aegis.bat` in the root folder to boot both servers simultaneously!)*
+
+### 4. Setup the AI MCP Server (Claude Desktop)
 To allow Claude to run financial simulations locally, add this to your `%APPDATA%\Claude\claude_desktop_config.json`:
 ```json
 {
   "mcpServers": {
     "aegis-flow-finance": {
       "command": "python",
-      "args": ["C:\\path\\to\\vsa_platform\\vsa_financial_mcp.py"]
+      "args": ["C:\\absolute\\path\\to\\vsa_financial_mcp.py"]
     }
   }
 }

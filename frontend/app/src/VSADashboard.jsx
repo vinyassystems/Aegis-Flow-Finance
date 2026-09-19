@@ -71,6 +71,40 @@ export default function VSADashboard() {
     runSimulation(newPurchase);
   };
 
+  const handleCSVUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setLoading(true);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const text = event.target.result;
+        // Simple mock CSV parser
+        const rows = text.split('\n').slice(1); // skip header
+        const newTxs = rows.map((row, idx) => {
+          const cols = row.split(',');
+          if (cols.length >= 3) {
+            return {
+              id: 100 + idx,
+              name: cols[0],
+              amount: parseFloat(cols[1]),
+              type: parseFloat(cols[1]) > 0 ? 'income' : 'expense',
+              due_date: cols[2].trim()
+            };
+          }
+          return null;
+        }).filter(Boolean);
+        
+        if (newTxs.length > 0) {
+          setTransactions([...transactions, ...newTxs]);
+          setTimeout(() => runSimulation(), 500); // Rerun engine with new data
+        } else {
+          setLoading(false);
+        }
+      };
+      reader.readAsText(file);
+    }
+  };
+
   const filteredTransactions = transactions.filter(t => t.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   if (secureMode) {
@@ -79,7 +113,7 @@ export default function VSADashboard() {
         <button onClick={() => setSecureMode(false)} className="absolute top-6 right-6 bg-red-500/10 text-red-500 border border-red-500/50 hover:bg-red-500/20 px-6 py-2 rounded-full transition-all z-50 font-medium tracking-wide">
           Exit Secure Terminal
         </button>
-        <VSASecureDashboard />
+        <VSASecureDashboard liveData={data} liveDangerDate={dangerDate} />
       </div>
     );
   }
@@ -137,13 +171,21 @@ export default function VSADashboard() {
             <p className="text-gray-400 text-sm">Real-time ML forecasting powered by Aegis Engine.</p>
           </div>
           
-          <button onClick={() => runSimulation()} className="bg-white text-black hover:bg-gray-200 px-6 py-2.5 rounded-full font-semibold transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center space-x-2">
-            {loading ? (
-              <span className="flex items-center space-x-2"><svg className="animate-spin h-4 w-4 text-black" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> <span>Syncing...</span></span>
-            ) : (
-              <span>⚡ Run Engine</span>
-            )}
-          </button>
+          <div className="flex items-center space-x-4">
+            <label className="cursor-pointer bg-[#121214]/80 backdrop-blur-md border border-white/10 text-gray-300 hover:text-white hover:bg-white/5 px-6 py-2.5 rounded-full font-semibold transition-all shadow-lg flex items-center space-x-2">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+              <span>Upload CSV</span>
+              <input type="file" accept=".csv" className="hidden" onChange={handleCSVUpload} />
+            </label>
+            
+            <button onClick={() => runSimulation()} className="bg-white text-black hover:bg-gray-200 px-6 py-2.5 rounded-full font-semibold transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center space-x-2">
+              {loading ? (
+                <span className="flex items-center space-x-2"><svg className="animate-spin h-4 w-4 text-black" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> <span>Syncing...</span></span>
+              ) : (
+                <span>⚡ Run Engine</span>
+              )}
+            </button>
+          </div>
         </header>
 
         {activeModel === 'freelancer' && (

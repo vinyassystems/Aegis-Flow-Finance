@@ -5,7 +5,7 @@ import { decryptPayload } from './crypto';
 // The exact encrypted string from the python backend (AES-GCM)
 const ENCRYPTED_PAYLOAD_FROM_SERVER = "gAAAAABm-... (simulated for UI)";
 
-export default function VSASecureDashboard() {
+export default function VSASecureDashboard({ liveData, liveDangerDate }) {
   const [decryptedData, setDecryptedData] = useState(null);
   const [isDecrypting, setIsDecrypting] = useState(true);
   const [dangerDate, setDangerDate] = useState("Scanning...");
@@ -13,25 +13,13 @@ export default function VSASecureDashboard() {
   useEffect(() => {
     // Simulate the decryption process to make the UI look like a hacker terminal
     const timer = setTimeout(() => {
-      const today = new Date();
-      const addDays = (days) => {
-        const d = new Date(today);
-        d.setDate(d.getDate() + days);
-        return d.toISOString().split('T')[0];
-      };
-
-      // Mocking the decrypted JSON payload from the Web Crypto API
-      setDecryptedData([
-        { date: addDays(0), balance: 4500 },
-        { date: addDays(25), balance: 1800 },
-        { date: addDays(55), balance: -500 },
-        { date: addDays(90), balance: 3000 },
-      ]);
-      setDangerDate(addDays(55));
+      // Use the actual live data passed from the main dashboard
+      setDecryptedData(liveData || []);
+      setDangerDate(liveDangerDate || "Safe");
       setIsDecrypting(false);
     }, 1500);
     return () => clearTimeout(timer);
-  }, []);
+  }, [liveData, liveDangerDate]);
 
   return (
     <div className="min-h-screen bg-[#030303] text-gray-300 font-mono p-8 relative overflow-hidden">
@@ -43,7 +31,7 @@ export default function VSASecureDashboard() {
         <header className="mb-12 border-b border-white/10 pb-6 flex items-end justify-between">
           <div>
             <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 tracking-tighter mb-2">
-              ZK-Enclave Terminal
+              Aegis Secure Terminal
             </h1>
             <p className="text-emerald-500/70 text-sm flex items-center space-x-2">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>

@@ -52,8 +52,26 @@ export default function VSADashboard() {
       setDangerDate(result.danger_date);
       setPlaybook(result.recovery_playbook);
     } catch (err) {
-      console.error("Backend offline. Please start FastAPI.", err);
-      setPlaybook("⚠️ Error: Could not connect to FastAPI backend.");
+      console.error("Backend offline. Using local fallback simulation.", err);
+      // Fallback data so the portfolio looks good even without the python server
+      const today = new Date();
+      const mockTrajectory = Array.from({length: 90}, (_, i) => {
+        const d = new Date(today);
+        d.setDate(d.getDate() + i);
+        // Simple mock math approximation based on inputs
+        const base = 8450 - (variableExpense * i) + (i > 15 ? 5000 : 0) - (i > 5 ? 200 : 0) - (i > 30 ? 1500 : 0);
+        return {
+          date: d.toISOString().split('T')[0],
+          balance: base,
+          bestCase: base + (i * 20),
+          worstCase: base - (i * 30)
+        };
+      });
+      setData(mockTrajectory);
+      setLowestBalance(Math.min(...mockTrajectory.map(d => d.balance)));
+      const danger = mockTrajectory.find(d => d.worstCase < 0);
+      setDangerDate(danger ? danger.date : "Safe (Offline Mode)");
+      setPlaybook("Running in Local Web Mode. Start the FastAPI backend for full ML precision and AES-GCM encryption.");
     }
     setLoading(false);
   };

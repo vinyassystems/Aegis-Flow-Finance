@@ -90,17 +90,17 @@ export default function VSADashboard() {
         
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 mt-4 ml-2">Modules</p>
         
-        <button onClick={() => setActiveModel('freelancer')} className={`text-left px-4 py-3 rounded-xl transition-all flex items-center space-x-3 ${activeModel === 'freelancer' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'}`}>
+        <button onClick={() => setActiveModel('freelancer')} className={`text-left px-4 py-3 rounded-xl transition-all flex items-center space-x-3 ${activeModel === 'freelancer' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.2)]' : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'}`}>
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
           <span className="font-medium text-sm">Freelancer Engine</span>
         </button>
         
-        <button onClick={() => setActiveModel('b2c')} className={`text-left px-4 py-3 rounded-xl transition-all flex items-center space-x-3 ${activeModel === 'b2c' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'}`}>
+        <button onClick={() => setActiveModel('b2c')} className={`text-left px-4 py-3 rounded-xl transition-all flex items-center space-x-3 ${activeModel === 'b2c' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.2)]' : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'}`}>
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg>
           <span className="font-medium text-sm">Consumer Copilot</span>
         </button>
         
-        <button onClick={() => setActiveModel('b2b')} className={`text-left px-4 py-3 rounded-xl transition-all flex items-center space-x-3 ${activeModel === 'b2b' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'}`}>
+        <button onClick={() => setActiveModel('b2b')} className={`text-left px-4 py-3 rounded-xl transition-all flex items-center space-x-3 ${activeModel === 'b2b' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.2)]' : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'}`}>
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
           <span className="font-medium text-sm">Developer API</span>
         </button>
@@ -118,7 +118,6 @@ export default function VSADashboard() {
 
       {/* Main Content Dashboard */}
       <div className="flex-1 p-10 overflow-y-auto relative">
-        {/* Subtle background glow */}
         <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none"></div>
         
         <header className="flex justify-between items-end mb-10 relative z-10">
@@ -141,10 +140,11 @@ export default function VSADashboard() {
         </header>
 
         {activeModel === 'freelancer' && (
-          <div className="bg-[#121214]/80 backdrop-blur-md p-6 rounded-2xl border border-white/5 mb-8 shadow-xl">
-            <div className="flex justify-between items-center mb-6">
+          <div className="bg-[#121214]/80 backdrop-blur-md p-6 rounded-2xl border border-indigo-500/30 mb-8 shadow-[0_0_40px_rgba(99,102,241,0.15)] relative overflow-hidden">
+            <div className="absolute top-[-50px] right-[-50px] w-32 h-32 bg-indigo-500/20 rounded-full blur-[50px] pointer-events-none"></div>
+            <div className="flex justify-between items-center mb-6 relative z-10">
                <h2 className="text-lg font-semibold text-white flex items-center space-x-2">
-                 <svg className="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                 <svg className="w-5 h-5 text-indigo-400 drop-shadow-[0_0_5px_rgba(99,102,241,0.8)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
                  <span>ML Forecasting & Ledger</span>
                </h2>
                <div className="relative">
@@ -153,7 +153,7 @@ export default function VSADashboard() {
                </div>
             </div>
             
-            <div className="flex items-center space-x-6 bg-black/30 p-4 rounded-xl border border-white/5 mb-6">
+            <div className="flex items-center space-x-6 bg-black/30 p-4 rounded-xl border border-white/5 mb-6 relative z-10">
               <div>
                 <p className="text-xs text-gray-400 font-medium mb-1 uppercase tracking-wider">Daily Variable Spend Limit</p>
                 <div className="flex items-center space-x-4">
@@ -163,7 +163,7 @@ export default function VSADashboard() {
               </div>
             </div>
             
-            <div className="max-h-40 overflow-y-auto pr-2 custom-scrollbar">
+            <div className="max-h-40 overflow-y-auto pr-2 custom-scrollbar relative z-10">
               {filteredTransactions.map(t => (
                 <div key={t.id} className="flex justify-between items-center py-3 border-b border-white/5 hover:bg-white/5 px-3 rounded-lg transition-colors group">
                   <div className="flex items-center space-x-3">
@@ -175,12 +175,29 @@ export default function VSADashboard() {
                       <p className="text-xs text-gray-500">{t.due_date}</p>
                     </div>
                   </div>
-                  <span className={`font-mono text-sm font-semibold ${t.type === 'income' ? 'text-emerald-400' : 'text-gray-300'}`}>
+                  <span className={`font-mono text-sm font-semibold ${t.type === 'income' ? 'text-emerald-400 drop-shadow-[0_0_5px_rgba(52,211,153,0.8)]' : 'text-gray-300'}`}>
                     {t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString()}
                   </span>
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {activeModel === 'b2c' && (
+          <div className="bg-[#121214]/80 backdrop-blur-md p-6 rounded-2xl border border-emerald-500/30 mb-8 shadow-[0_0_40px_rgba(16,185,129,0.15)] relative overflow-hidden">
+            <div className="absolute top-[-50px] right-[-50px] w-32 h-32 bg-emerald-500/20 rounded-full blur-[50px] pointer-events-none"></div>
+            <h2 className="text-lg font-semibold text-white mb-4 relative z-10 flex items-center space-x-2">
+              <svg className="w-5 h-5 text-emerald-400 drop-shadow-[0_0_5px_rgba(16,185,129,0.8)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+              <span>Ask the AI: Can I afford this?</span>
+            </h2>
+            <form onSubmit={handleB2CPurchase} className="flex space-x-4 relative z-10">
+              <input type="text" placeholder="e.g. MacBook Pro" value={purchaseItem} onChange={e => setPurchaseItem(e.target.value)} className="flex-1 bg-black/50 border border-white/10 text-gray-200 placeholder-gray-600 p-3 rounded-xl focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition-all" required />
+              <input type="number" placeholder="Cost ($)" value={purchaseAmount} onChange={e => setPurchaseAmount(e.target.value)} className="w-32 bg-black/50 border border-white/10 text-gray-200 placeholder-gray-600 p-3 rounded-xl focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition-all" required />
+              <button type="submit" className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/50 hover:bg-emerald-500/20 px-8 py-3 rounded-xl font-semibold transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                Check Affordability
+              </button>
+            </form>
           </div>
         )}
 
@@ -213,9 +230,9 @@ export default function VSADashboard() {
         </div>
 
         {/* Premium Chart */}
-        <div className="bg-[#121214]/80 backdrop-blur-md rounded-2xl shadow-2xl p-6 h-[400px] border border-white/5 relative z-10">
+        <div className="bg-[#121214]/80 backdrop-blur-md rounded-2xl shadow-[0_0_40px_rgba(99,102,241,0.15)] p-6 h-[400px] border border-indigo-500/30 relative z-10">
           <h2 className="text-sm font-semibold text-gray-300 mb-6 flex items-center space-x-2">
-            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse shadow-[0_0_10px_rgba(99,102,241,1)]"></span>
             <span>Live Predictive Trajectory</span>
           </h2>
           {data.length > 0 ? (

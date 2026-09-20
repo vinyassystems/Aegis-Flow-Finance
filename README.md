@@ -13,7 +13,15 @@ Traditional budgeting apps tell you what you *already* spent. Aegis uses predict
 *   **Zero-Knowledge Architecture:** Financial payload processing uses AES-GCM encryption in-memory. Your raw transactions are never persisted in plaintext.
 *   **Predictive ML Boundaries:** 90-day trajectory forecasting with 95% Confidence Intervals for variable spending.
 *   **Model Context Protocol (MCP):** Connects directly to AI clients like Claude Desktop to provide agentic financial reasoning natively in your chat.
-*   **B2B & B2C Modules:** Includes a full React UI for consumer copilot queries, freelancer invoice tracking, and B2B API key management.
+
+## 🧩 Dashboard Modules
+
+Because Aegis is a full-stack platform, the React dashboard is split into 4 powerful modules:
+
+1.  **📊 Freelancer Engine (Core):** Designed for gig-workers with unpredictable income. Features an interactive slider to adjust your daily variable spend limits, manual transaction entry, CSV upload, and a real-time Recharts trajectory graph that plots your 90-day cash flow survival.
+2.  **🛍️ Consumer Copilot:** A quick-check tool for everyday consumers. Users can ask the AI *"Can I afford this MacBook Pro?"*, input a cost, and instantly see how a massive one-off purchase affects their 90-day safety net.
+3.  **🔑 Developer API (B2B):** Aegis is built to be a monetizable SaaS platform. This portal allows enterprise clients (like other banks or budgeting apps) to generate secure API keys (e.g., `aegis_live_...`) to hit the FastAPI backend programmatically via cURL.
+4.  **🔒 ZK-Enclave Terminal:** A hyper-premium, Matrix-style dashboard that simulates the client-side AES-GCM decryption process. It ensures that raw financial payloads are decrypted entirely in the browser, meaning the backend server never stores plain text data.
 
 ## 🏗️ Architecture
 

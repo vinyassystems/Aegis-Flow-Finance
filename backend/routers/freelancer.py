@@ -1,10 +1,26 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException, Security
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime, timedelta
 from ..core_engine import run_90_day_simulation
 
 router = APIRouter()
+security = HTTPBearer()
+
+def verify_api_key(credentials: HTTPAuthorizationCredentials = Security(security)):
+    """
+    Validates that the provided Bearer token is a valid Aegis API key.
+    In a production SaaS, this would check a PostgreSQL database.
+    For this open-source core, we just validate the prefix structure.
+    """
+    token = credentials.credentials
+    if not token.startswith("aegis_live_") and not token.startswith("aegis_test_"):
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid API Key. Keys must start with 'aegis_live_' or 'aegis_test_'"
+        )
+    return token
 
 class Transaction(BaseModel):
     id: int
@@ -19,7 +35,7 @@ class SimulationRequest(BaseModel):
     variable_daily_expense: float = 50.0
 
 @router.post("/simulate")
-async def simulate(payload: SimulationRequest):
+async def simulate(payload: SimulationRequest, api_key: str = Depends(verify_api_key)):
     """
     Takes real transactions, runs the 90-day core engine, and generates
     the trajectory array and ML bounds for the React chart.

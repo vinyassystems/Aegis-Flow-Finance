@@ -47,7 +47,10 @@ export default function VSADashboard() {
 
       const response = await fetch('http://localhost:8000/api/v1/freelancer/simulate', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKeys[0]?.key.replace(/•/g, 'x') || 'aegis_test_local'}`
+        },
         body: JSON.stringify(payload)
       });
       const result = await response.json();

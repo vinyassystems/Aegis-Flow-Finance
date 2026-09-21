@@ -91,37 +91,59 @@ curl -X POST "http://localhost:8000/api/v1/freelancer/simulate"
 
 ---
 
-## 🤖 Claude AI Integration (MCP)
+## 🤖 Claude AI Integration (MCP Server)
 
-Aegis includes a **Model Context Protocol (MCP) server** that connects directly to Claude Desktop. Open Claude and ask financial questions in plain English — Claude will use your local Aegis engine to answer!
+Aegis includes a built-in **Model Context Protocol (MCP)** server (`vsa_financial_mcp.py`). This allows AI clients like **Claude Desktop** to run financial forecasts, check affordability, audit subscriptions, and analyze live bank data directly via natural language.
+
+> ⚠️ **Important:** MCP requires the official **Claude Desktop Application** (Windows / macOS). Browser-based Claude (`claude.ai`) does not support local machine MCP connections.
 
 ### What Claude can do with Aegis:
-| Say to Claude... | What Aegis does |
-|---|---|
-| *"What is my financial runway?"* | Reads your live monthly summary |
-| *"Run a 90-day simulation with $5,000 balance"* | Calls `run_predictive_cash_flow` tool |
-| *"Can I afford a $3,000 laptop?"* | Calls `get_affordability_check` tool |
-| *"Audit my subscriptions"* | Uses the `audit_subscriptions` prompt template |
-| *"Sync my bank data"* | Calls `sync_live_bank_data` tool |
+| What you say to Claude... | Tool Executed | Result |
+|---|---|---|
+| *"What is my financial runway?"* | `get_monthly_summary` | Returns monthly burn rate, total liquid cash, and runway in months. |
+| *"Run a 90-day simulation with $8,450 starting balance"* | `run_predictive_cash_flow` | Simulates 90 days of cash flow with 95% confidence intervals. |
+| *"Can I afford a $2,500 equipment purchase?"* | `get_affordability_check` | Analyzes post-purchase reserves & returns safety rating. |
+| *"Audit my subscriptions and suggest cuts"* | `audit_subscriptions` | Analyzes active recurring payments and suggests savings. |
+| *"Sync my live bank data"* | `sync_live_bank_data` | Pulls simulated Plaid/Teller real-time transactions. |
 
-### Setup (Claude Desktop)
+---
 
-1. Install [Claude Desktop](https://claude.ai/download).
-2. Open the config file:
-   - **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
-   - **Mac:** `~/Library/Application Support/Claude/claude_desktop_config.json`
-3. Add this block (replace the path with your clone location):
+### ⚙️ Step-by-Step Setup Guide
+
+#### 1. Install Dependencies
+```bash
+pip install "mcp<2"
+```
+
+#### 2. Install Claude Desktop
+Download and install the official app: [claude.ai/download](https://claude.ai/download).
+
+#### 3. Configure the MCP Connection
+Open your Claude configuration file:
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+
+Add the following configuration:
 ```json
 {
   "mcpServers": {
     "aegis-flow-finance": {
       "command": "python",
-      "args": ["C:\\Users\\YOUR_NAME\\Desktop\\Aegis-Flow-Finance\\vsa_financial_mcp.py"]
+      "args": ["C:\\Users\\YOUR_USERNAME\\Desktop\\Aegis-Flow-Finance\\vsa_financial_mcp.py"]
     }
   }
 }
 ```
-4. Restart Claude Desktop. You will see **"aegis-flow-finance"** appear as a connected tool in Claude's sidebar.
+*(Replace `C:\\Users\\YOUR_USERNAME\\...` with your actual full path to `vsa_financial_mcp.py`)*
+
+#### 4. Test Standalone (Without Claude Desktop)
+You can verify and test all MCP tools directly from your terminal anytime:
+```bash
+python -X utf8 -c "import vsa_financial_mcp; print(vsa_financial_mcp.get_affordability_check(8450, 2500, 4500)); print(vsa_financial_mcp.get_monthly_summary())"
+```
+
+#### 5. Launch & Use
+Restart Claude Desktop. The **`aegis-flow-finance`** tools will automatically appear in Claude's prompt bar. You can now chat naturally with your finances!
 
 ---
 

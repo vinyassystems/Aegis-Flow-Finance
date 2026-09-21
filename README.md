@@ -27,6 +27,8 @@ The dashboard is split into 4 modules, accessible from the left sidebar:
 ### 📊 1. Freelancer Engine (Core)
 > **Who is it for?** Gig-workers, freelancers, and creators with unpredictable income.
 
+![Freelancer Engine](assets/freelancer_engine.png)
+
 - Interactive slider to adjust your **Daily Variable Spend Limit** (food, transport, etc).
 - **Manual Transaction Entry:** Add any custom income or expense and watch the 90-day graph recalculate instantly.
 - **CSV Upload:** Import your bank transactions by uploading a CSV file (`Name, Amount, Date`).
@@ -35,10 +37,14 @@ The dashboard is split into 4 modules, accessible from the left sidebar:
 ### 🛍️ 2. Consumer Copilot
 > **Who is it for?** Everyday consumers who want a quick affordability check.
 
+![Consumer Copilot](assets/consumer_copilot.png)
+
 Ask the AI *"Can I afford a MacBook Pro?"*, input the price, and instantly see whether the purchase is **Safe, Risky, or Denied** based on your current balance and future trajectory.
 
 ### 🔑 3. Developer API (B2B)
 > **Who is it for?** Companies and developers who want to embed predictive cash flow into their own apps.
+
+![Developer API](assets/developer_api.png)
 
 This is the business layer of Aegis. Any external developer can:
 1. Click **"Generate New Key"** to get a unique `aegis_live_XXXX` API key.
